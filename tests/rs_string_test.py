@@ -1,28 +1,27 @@
-from unittest import TestCase
-import rs_string
+import pytest
+from src import rs_string
 
 
-class RsStringTestCase(TestCase):
-    def test_is_empty(self):
-        self.assertTrue(rs_string.is_none_or_empty(""))
-        self.assertFalse(rs_string.is_none_or_empty(" "))
+@pytest.mark.parametrize(["value", "expected"], [("", True), (" ", False)])
+def test_is_empty(value, expected):
+    assert rs_string.is_none_or_empty(value) is expected
 
-    def test_is_none_or_empty(self):
-        self.assertTrue(rs_string.is_none_or_empty(None))
-        self.assertTrue(rs_string.is_none_or_empty(""))
-        self.assertFalse(rs_string.is_none_or_empty(" "))
 
-    def test_is_whitespace(self):
-        self.assertTrue(rs_string.is_whitespace(" "))
-        self.assertTrue(rs_string.is_whitespace("\t"))
-        self.assertTrue(rs_string.is_whitespace("\n"))
-        self.assertTrue(rs_string.is_whitespace("\r"))
-        self.assertTrue(rs_string.is_whitespace("\f"))
-        self.assertTrue(rs_string.is_whitespace("\v"))
-        self.assertFalse(rs_string.is_whitespace(""))
+@pytest.mark.parametrize(["value", "expected"], [(None, True), ("", True), (" ", False)])
+def test_is_none_or_empty(value, expected):
+    assert rs_string.is_none_or_empty(value) is expected
 
-    def test_is_none_whitespace(self):
-        self.assertTrue(rs_string.is_none_or_whitespace(None))
-        self.assertTrue(rs_string.is_none_or_whitespace(""))
-        self.assertTrue(rs_string.is_none_or_whitespace(" "))
+
+@pytest.mark.parametrize(["value", "expected"], [
+    (" ", True), ("\t", True), ("\n", True),
+    ("\r", True), ("\f", True), ("\v", True),
+    ("", False),
+])
+def test_is_whitespace(value, expected):
+    assert rs_string.is_whitespace(value) is expected
+
+
+@pytest.mark.parametrize(["value", "expected"], [(None, True), ("", True), (" ", True)])
+def test_is_none_whitespace(value, expected):
+    assert rs_string.is_none_or_whitespace(value) is expected
         
